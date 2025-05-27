@@ -63,3 +63,65 @@ jQuery('body').on('init_checkout', function(){
     // now.do.whatever();
 });
 ```
+
+### Woocommerce change single product gallery slider options
+Have a look at this file yyou will see filter available to change default options:
+/wp-content/plugins/woocommerce/includes/class-wc-frontend-scripts.php
+
+
+
+```
+
+			case 'wc-single-product':
+				$params = array(
+					'i18n_required_rating_text'         => esc_attr__( 'Please select a rating', 'woocommerce' ),
+					'i18n_product_gallery_trigger_text' => esc_attr__( 'View full-screen image gallery', 'woocommerce' ),
+					'review_rating_required'            => wc_review_ratings_required() ? 'yes' : 'no',
+					'flexslider'                        => apply_filters(
+						'woocommerce_single_product_carousel_options',
+						array(
+							'rtl'            => is_rtl(),
+							'animation'      => 'slide',
+							'smoothHeight'   => true,
+							'directionNav'   => false,
+							'controlNav'     => 'thumbnails',
+							'slideshow'      => false,
+							'animationSpeed' => 500,
+							'animationLoop'  => false, // Breaks photoswipe pagination if true.
+							'allowOneSlide'  => false,
+						)
+					),
+					'zoom_enabled'                      => apply_filters( 'woocommerce_single_product_zoom_enabled', get_theme_support( 'wc-product-gallery-zoom' ) ),
+					'zoom_options'                      => apply_filters( 'woocommerce_single_product_zoom_options', array() ),
+					'photoswipe_enabled'                => apply_filters( 'woocommerce_single_product_photoswipe_enabled', get_theme_support( 'wc-product-gallery-lightbox' ) ),
+					'photoswipe_options'                => apply_filters(
+						'woocommerce_single_product_photoswipe_options',
+						array(
+							'shareEl'               => false,
+							'closeOnScroll'         => false,
+							'history'               => false,
+							'hideAnimationDuration' => 0,
+							'showAnimationDuration' => 0,
+						)
+					),
+					'flexslider_enabled'                => apply_filters( 'woocommerce_single_product_flexslider_enabled', get_theme_support( 'wc-product-gallery-slider' ) ),
+				);
+				break;
+
+```
+
+Change wc_single_product_params global variable values for JS
+
+```
+jQuery(function ($) {
+    wc_single_product_params.flexslider.directionNav = true;
+    wc_single_product_params.flexslider.slideshow = true;
+    wc_single_product_params.flexslider.animationLoop = true;
+    wc_single_product_params.flexslider.animationSpeed = 500;
+    console.log("wc_single_product_params");
+    console.log(wc_single_product_params);
+});
+```
+
+
+
